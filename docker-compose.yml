@@ -6,10 +6,37 @@ services:
     image: mesa-v2
     ports:
       - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       NODE_ENV: development
       CHOKIDAR_USEPOLLING: "true"
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: url_shortener
+      DB_PASSWORD: url_shortener_password
+      DB_NAME: url_shortener
     command: yarn start:dev
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    environment:
+      POSTGRES_USER: url_shortener
+      POSTGRES_PASSWORD: url_shortener_password
+      POSTGRES_DB: url_shortener
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U url_shortener -d url_shortener"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
