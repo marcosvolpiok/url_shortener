@@ -7,3 +7,7 @@ export class UrlDto {
 export class CreateUrlDto {
   original: string;
 }
+
+export class OriginalUrlDto {
+  original: string;
+}

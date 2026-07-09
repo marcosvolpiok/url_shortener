@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Redirect } from '@nestjs/common';
 import { UrlService } from './url.service';
-import { CreateUrlDto, UrlDto } from './url.dto';
+import { CreateUrlDto, OriginalUrlDto, UrlDto } from './url.dto';
 
 @Controller('url')
 export class UrlController {
@@ -12,7 +12,9 @@ export class UrlController {
   }
 
   @Get('/urls/:shortUrl')
-  findOriginalUrl(@Param('shortUrl') shortUrl: string): Promise<string> {
+  findOriginalUrl(
+    @Param('shortUrl') shortUrl: string,
+  ): Promise<OriginalUrlDto> {
     return this.urlService.findOriginalUrl(shortUrl);
   }
 
@@ -21,8 +23,9 @@ export class UrlController {
   async redirectToOriginalUrl(
     @Param('shortUrl') shortUrl: string,
   ): Promise<{ url: string }> {
-    const originalUrl = await this.urlService.findOriginalUrl(shortUrl);
+    const originalUrl: OriginalUrlDto =
+      await this.urlService.findOriginalUrl(shortUrl);
 
-    return { url: originalUrl };
+    return { url: originalUrl.original };
   }
 }

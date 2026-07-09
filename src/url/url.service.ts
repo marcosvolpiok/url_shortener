@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Url } from './url.entity';
-import { CreateUrlDto, UrlDto } from './url.dto';
+import { CreateUrlDto, OriginalUrlDto, UrlDto } from './url.dto';
 
 @Injectable()
 export class UrlService {
@@ -112,7 +112,7 @@ export class UrlService {
     return id;
   }
 
-  async findOriginalUrl(shortUrl: string): Promise<string> {
+  async findOriginalUrl(shortUrl: string): Promise<OriginalUrlDto> {
     const id = this.decodeShortUrl(shortUrl);
     const url = await this.urlRepository.findOne({
       where: { id: id.toString() as unknown as bigint },
@@ -122,6 +122,6 @@ export class UrlService {
       throw new NotFoundException('URL not found');
     }
 
-    return url.original;
+    return { original: url.original };
   }
 }

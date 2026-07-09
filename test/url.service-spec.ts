@@ -143,9 +143,9 @@ describe('UrlService', () => {
 
       urlRepository.findOne.mockResolvedValue(url);
 
-      await expect(service.findOriginalUrl('10')).resolves.toBe(
-        'https://example.com',
-      );
+      await expect(service.findOriginalUrl('10')).resolves.toEqual({
+        original: 'https://example.com',
+      });
 
       expect(urlRepository.findOne).toHaveBeenCalledWith({
         where: { id: '62' },
