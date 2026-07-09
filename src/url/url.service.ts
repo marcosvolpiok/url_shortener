@@ -23,12 +23,23 @@ export class UrlService {
   }
 
   async createUrl(createUrlDto: CreateUrlDto): Promise<UrlDto> {
+    const existingUrl = await this.urlRepository.findOne({
+      where: { original: createUrlDto.original },
+    });
+
+    if (existingUrl) {
+      return existingUrl;
+    }
+
     const id = await this.getNextUrlId();
     const short = this.generateShortUrl(id);
 
     // Inserta explícitamente el id reservado para no consumir otra vez la sequence.
     const [url]: UrlDto[] = await this.urlRepository.query(
-      'INSERT INTO public.url (id, original, short) VALUES ($1, $2, $3) RETURNING id, original, short',
+      `INSERT INTO public.url (id, original, short)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (original) DO UPDATE SET original = EXCLUDED.original
+       RETURNING id, original, short`,
       [id.toString(), createUrlDto.original, short],
     );
 
