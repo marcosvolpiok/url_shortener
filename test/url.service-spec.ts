@@ -78,6 +78,18 @@ describe('UrlService', () => {
         ['62', 'https://example.com', '10'],
       );
     });
+
+    it.each(['', 'example.com', 'ftp://example.com', ' https://example.com'])(
+      'throws BadRequestException when original url is invalid: %s',
+      async (original) => {
+        await expect(service.createUrl({ original })).rejects.toThrow(
+          BadRequestException,
+        );
+
+        expect(urlRepository.findOne).not.toHaveBeenCalled();
+        expect(urlRepository.query).not.toHaveBeenCalled();
+      },
+    );
   });
 
   describe('generateShortUrl', () => {

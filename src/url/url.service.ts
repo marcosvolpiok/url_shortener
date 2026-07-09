@@ -19,6 +19,8 @@ export class UrlService {
   ) {}
 
   async createUrl(createUrlDto: CreateUrlDto): Promise<UrlDto> {
+    this.validateOriginalUrl(createUrlDto.original);
+
     const existingUrl = await this.urlRepository.findOne({
       where: { original: createUrlDto.original },
     });
@@ -40,6 +42,26 @@ export class UrlService {
     );
 
     return url;
+  }
+
+  private validateOriginalUrl(originalUrl: string): void {
+    if (
+      typeof originalUrl !== 'string' ||
+      originalUrl.length === 0 ||
+      originalUrl.trim() !== originalUrl
+    ) {
+      throw new BadRequestException('Original URL must be a valid URL');
+    }
+
+    try {
+      const url = new URL(originalUrl);
+
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        throw new BadRequestException('Original URL must be a valid URL');
+      }
+    } catch {
+      throw new BadRequestException('Original URL must be a valid URL');
+    }
   }
 
   private async getNextUrlId(): Promise<bigint> {
