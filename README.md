@@ -1,6 +1,12 @@
-# build
+# Build
 ```
 docker-compose build
+```
+
+# Run
+
+```
+docker-compose down
 docker-compose up
 ```
 
