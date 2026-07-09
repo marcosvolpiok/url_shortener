@@ -18,10 +18,6 @@ export class UrlService {
     private urlRepository: Repository<Url>,
   ) {}
 
-  async findAllUrls(): Promise<UrlDto[]> {
-    return this.urlRepository.find();
-  }
-
   async createUrl(createUrlDto: CreateUrlDto): Promise<UrlDto> {
     const existingUrl = await this.urlRepository.findOne({
       where: { original: createUrlDto.original },
