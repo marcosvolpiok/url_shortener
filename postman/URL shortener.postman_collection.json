@@ -1,0 +1,94 @@
+{
+  "info": {
+    "_postman_id": "097c84a6-f931-479d-9fbf-2024f583a4a9",
+    "name": "URL shortener",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4768375"
+  },
+  "item": [
+    {
+      "name": "Add URL",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();",
+              "pm.environment.set('short_url', response.short);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"original\": \"http://google.com\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/url/urls",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "url",
+            "urls"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get URLs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/url/urls/{{short_url}}",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "url",
+            "urls",
+            "{{short_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Redirect URLs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/url/{{short_url}}",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "url",
+            "{{short_url}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
