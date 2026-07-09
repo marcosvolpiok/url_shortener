@@ -97,7 +97,7 @@ export class UrlService {
     });
 
     if (!url) {
-      throw new NotFoundException('URL not found' + shortUrl);
+      throw new NotFoundException('URL not found');
     }
 
     return url.original;
