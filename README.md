@@ -1,10 +1,13 @@
-*build*
-´docker-compose build´
-´docker-compose up´
+# build
+```docker-compose build
+docker-compose up
+```
 
-*Tests*
+# Tests
 You can run tests with this command:
-´yarn test´
+```
+yarn test
+```
 
-*Postman*
+# Postman
 You can look a Postman collection on ./postman directory.
