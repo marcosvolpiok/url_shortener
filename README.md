@@ -11,7 +11,12 @@ docker-compose up
 ```
 
 # Tests
-You can run tests with this command:
+You can run tests with need to enter to the backend's container shell:
+```
+docker exec -i -t url_shortener_backend_1 /bin/sh
+```
+
+Then run:
 ```
 yarn test
 ```
